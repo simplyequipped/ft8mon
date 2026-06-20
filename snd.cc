@@ -296,7 +296,11 @@ CardSoundIn::start()
 
   // don't set latency to zero; this causes problems on Linux.
   ip.suggestedLatency = Pa_GetDeviceInfo(card_)->defaultLowInputLatency;
-  
+
+  // support multiple sample rates, resampled automatically in decoder
+  if(Pa_IsFormatSupported(&ip, 0, rate_) != paNoError)
+    rate_ = (int) Pa_GetDeviceInfo(card_)->defaultSampleRate;
+
   PaStream *str = 0;
   PaError err = Pa_OpenStream(&str,
                               &ip,
@@ -330,6 +334,7 @@ CardSoundIn::start()
   }
 
   dt_ = now() - Pa_GetStreamTime(str);
+  latency_ = Pa_GetStreamInfo(str)->inputLatency;
 
 }
 

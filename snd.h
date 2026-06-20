@@ -28,6 +28,7 @@ class SoundIn {
 public:
   virtual void start() = 0;
   virtual int rate() = 0;
+  virtual double latency() { return 0; }
   virtual std::vector<double> get(int n, double &t0, int latest) = 0;
   virtual bool has_iq() { return false; } // default
   virtual std::vector<std::complex<double>> get_iq(int n, double &t0, int latest) {
@@ -45,6 +46,7 @@ class CardSoundIn : public SoundIn {
   int rate_;
   int channels_;
   double dt_; // time difference (seconds) between UNIX and stream time
+  double latency_; // input latency (seconds), from Pa_GetStreamInfo
 
   // circular buffer
   int n_;
@@ -58,6 +60,7 @@ class CardSoundIn : public SoundIn {
   void start();
   std::vector<double> get(int n, double &t0, int latest);
   int rate() { return rate_; }
+  double latency() { return latency_; }
 
   static int cb(const void *input,
                 void *output,

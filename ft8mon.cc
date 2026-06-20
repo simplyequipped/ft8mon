@@ -114,8 +114,10 @@ main(int argc, char *argv[])
         // most recent 15 seconds to be discarded.
         std::vector<double> samples = sin->get(15 * rate, ttt_start, 1);
 
-        // ttt_start is UNIX time of samples[0].
-        double ttt_end = ttt_start + samples.size() / rate;
+        // wall-clock time of the most recent sample, latency-corrected.
+        // PortAudio's ADC timestamp is unreliable on the raw-hw ALSA backend
+        // (different clock from Pa_GetStreamTime), so derive it from now().
+        double ttt_end = now() - sin->latency();
         cycle_start = ((long long) (ttt_end / 15)) * 15;
 
         // sample # of 0.5 seconds into the 15-second cycle.
