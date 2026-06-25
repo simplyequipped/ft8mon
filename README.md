@@ -1,3 +1,11 @@
+## Changes From Upstream
+
+- added support for sample rates other than 12000
+- added `.gitignote` for binaries
+- added stream input type (`-card stream <path>`) which reads an audio stream produced by [sdrfanout](https://github.com/simplyequipped/sdrfanout) from a FIFO file path
+
+<br>
+
 # ft8mon
 Demodulate the FT8 WSJT-X protocol of Taylor and Franke.
 Input from a sound card via portaudio.
