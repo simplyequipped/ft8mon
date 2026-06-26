@@ -3,6 +3,7 @@
 - added support for sample rates other than 12000
 - added `.gitignore` for binaries
 - added stream input type (`-card stream <path>`) which reads an audio stream produced by [sdrfanout](https://github.com/simplyequipped/sdrfanout) from a FIFO file path
+- added orphon process guard so the process exits if its parent process dies
 
 <br>
 

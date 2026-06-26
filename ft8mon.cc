@@ -12,6 +12,10 @@
 #include <time.h>
 #include <string.h>
 #include <mutex>
+#include <signal.h>
+#ifdef __linux__
+#include <sys/prctl.h>   // PR_SET_PDEATHSIG: avoid being orphoned
+#endif
 #include <map>
 #include <string>
 #include <thread>
@@ -85,6 +89,12 @@ usage()
 int
 main(int argc, char *argv[])
 {
+#ifdef __linux__
+  // If parent exits for any reason, even a hard kill that skips its
+  // teardown, the kernel sends SIGTERM
+  prctl(PR_SET_PDEATHSIG, SIGTERM);
+  if(getppid() == 1) return 0;
+#endif
   int hints[2] = { 2, 0 }; // CQ
   double budget = 5; // compute for this many seconds per cycle
 
