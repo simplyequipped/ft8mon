@@ -1,4 +1,4 @@
-CXX = c++ -O
+CXX = c++ -O3 -ffast-math
 # CXX += -g -fsanitize=address
 # CXX = g++9 -O3
 FLAGS = -std=c++17 -I/opt/local/include -I/usr/local/include -I/opt/local/include/libairspyhf -I/usr/include/libairspyhf
